@@ -51,7 +51,7 @@ Performance and Optimization
 
 UI and User Experience
 
-- Follow Material Design guidelines
+- Using shadcn ui
 - Implement responsive popup windows
 - Provide clear user feedback
 - Support keyboard navigation

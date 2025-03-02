@@ -1,0 +1,95 @@
+/* Utility classes for background colors */
+.bg-base {
+    background-color: hsl(var(--background));
+}
+
+.bg-card {
+    background-color: hsl(var(--card));
+}
+
+.bg-primary {
+    background-color: hsl(var(--primary));
+}
+
+.bg-secondary {
+    background-color: hsl(var(--secondary));
+}
+
+.bg-muted {
+    background-color: hsl(var(--muted));
+}
+
+.bg-accent {
+    background-color: hsl(var(--accent));
+}
+
+.bg-destructive {
+    background-color: hsl(var(--destructive));
+}
+
+.bg-popover {
+    background-color: hsl(var(--popover));
+}
+
+/* Utility classes for text colors */
+.text-base {
+    color: hsl(var(--foreground));
+}
+
+.text-card {
+    color: hsl(var(--card-foreground));
+}
+
+.text-primary {
+    color: hsl(var(--primary));
+}
+
+.text-primary-foreground {
+    color: hsl(var(--primary-foreground));
+}
+
+.text-secondary {
+    color: hsl(var(--secondary-foreground));
+}
+
+.text-muted {
+    color: hsl(var(--muted-foreground));
+}
+
+.text-accent {
+    color: hsl(var(--accent-foreground));
+}
+
+.text-destructive {
+    color: hsl(var(--destructive-foreground));
+}
+
+/* Border utilities */
+.border-base {
+    border-color: hsl(var(--border));
+}
+
+.border-input {
+    border-color: hsl(var(--input));
+}
+
+.ring-base {
+    --tw-ring-color: hsl(var(--ring));
+}
+
+/* Hover states */
+.hover-bg-primary:hover {
+    background-color: hsl(var(--primary));
+}
+
+.hover-text-primary:hover {
+    color: hsl(var(--primary));
+}
+
+.hover-bg-secondary:hover {
+    background-color: hsl(var(--secondary));
+}
+
+.hover-text-accent:hover {
+    color: hsl(var(--accent));
+}

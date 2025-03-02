@@ -1,0 +1,16 @@
+Missing $ref pointer "#/definitions/List". Token "List" does not exist.
+MissingPointerError: Missing $ref pointer "#/definitions/List". Token "List" does not exist.
+    at Pointer.resolve (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/pointer.js:113:23)
+    at $Ref.resolve (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/ref.js:79:24)
+    at $Refs._resolve (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/refs.js:168:21)
+    at inventory$Ref (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/bundle.js:125:27)
+    at crawl (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/bundle.js:100:21)
+    at crawl (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/bundle.js:103:21)
+    at crawl (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/bundle.js:103:21)
+    at bundle (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/bundle.js:54:5)
+    at $RefParser.bundle (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+json-schema-ref-parser@1.0.2/node_modules/@hey-api/json-schema-ref-parser/dist/lib/index.js:126:33)
+    at async Zs (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+openapi-ts@0.64.8_typescript@5.8.2/node_modules/@hey-api/openapi-ts/dist/index.cjs:12:1428)
+    at async lo (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+openapi-ts@0.64.8_typescript@5.8.2/node_modules/@hey-api/openapi-ts/dist/index.cjs:14:88353)
+    at async Promise.all (index 0)
+    at async oj (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+openapi-ts@0.64.8_typescript@5.8.2/node_modules/@hey-api/openapi-ts/dist/index.cjs:1311:4468)
+    at async start (/Users/longnguyen/workspace/react-router-antd/node_modules/.pnpm/@hey-api+openapi-ts@0.64.8_typescript@5.8.2/node_modules/@hey-api/openapi-ts/bin/index.cjs:120:21)
