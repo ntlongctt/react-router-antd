@@ -1,0 +1,3 @@
+apis:
+  docs/apis/open-api/auth.json:
+    alias: swagger-by-simplifi

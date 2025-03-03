@@ -1,0 +1,68 @@
+@startuml Clean Architecture
+
+!theme plain
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam componentStyle uml2
+
+title Clean Architecture for React Application
+
+' Define layers as packages
+package "Presentation Layer" {
+  [Components] as components
+  [Pages] as pages
+}
+
+package "Application Layer" {
+  [Application Services] as appServices
+  [State Management] as state
+}
+
+package "Domain Layer" {
+  [Entities] as entities
+  [Business Rules] as businessRules
+  [Repository Interfaces] as repoInterfaces
+  [Service Interfaces] as serviceInterfaces
+}
+
+package "Infrastructure Layer" {
+  [API Clients] as apiClients
+  [Repository Implementations] as repoImplementations
+  [External Services] as externalServices
+}
+
+package "Lib Layer" {
+  [Utilities] as utilities
+  [Helpers] as helpers
+}
+
+' Define dependencies (arrows)
+components --> appServices
+components --> entities
+pages --> appServices
+pages --> entities
+
+appServices --> entities
+appServices --> businessRules
+appServices --> repoInterfaces
+appServices --> serviceInterfaces
+state --> entities
+
+apiClients --> repoInterfaces
+repoImplementations --> repoInterfaces
+externalServices --> serviceInterfaces
+
+' Lib dependencies
+components ..> utilities
+pages ..> utilities
+appServices ..> helpers
+repoImplementations ..> utilities
+
+' Legend for diagram
+legend right
+  Dependency Rule: Dependencies can only point inward
+  Solid arrows: Direct dependencies
+  Dotted arrows: Optional utilities usage
+endlegend
+
+@enduml 

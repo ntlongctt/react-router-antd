@@ -1,0 +1,218 @@
+@startuml Clean Architecture
+
+' Define the package styles
+skinparam packageStyle rectangle
+skinparam componentStyle uml2
+skinparam linetype ortho
+
+' Define the colors for different layers
+!define DomainColor #FFCDD2
+!define ApplicationColor #BBDEFB
+!define InfrastructureColor #C8E6C9
+!define PresentationColor #D1C4E9
+!define LibColor #FFECB3
+
+' Define the packages for each layer
+package "Domain Layer" as Domain #DomainColor {
+  package "Models" {
+    class "User" as UserModel {
+      +id: string
+      +name: string
+      +email: string
+      +role: string
+    }
+    
+    class "Auth" as AuthModel {
+      +AuthCredentials
+      +AuthToken
+      +AuthState
+    }
+  }
+  
+  package "Interfaces" {
+    interface "UserRepository" as IUserRepository {
+      +getCurrentUser(): User
+      +updateProfile(profile: UserProfile): User
+    }
+    
+    interface "AuthRepository" as IAuthRepository {
+      +login(credentials: AuthCredentials): AuthToken
+      +logout(): void
+    }
+  }
+}
+
+package "Application Layer" as Application #ApplicationColor {
+  package "Auth" {
+    class "useAuth" as UseAuth {
+      +isAuthenticated: boolean
+      +user: User | null
+      +login(credentials): Promise<AuthToken>
+      +logout(): Promise<void>
+    }
+    
+    class "AuthProvider" as AuthProvider {
+      +AuthContext
+      +useAuthContext()
+    }
+  }
+  
+  package "User" {
+    class "useUser" as UseUser {
+      +useCurrentUser()
+      +useUpdateProfile()
+    }
+  }
+  
+  class "AppProvider" as AppProvider {
+    +QueryClientProvider
+    +AuthProvider
+  }
+}
+
+package "Infrastructure Layer" as Infrastructure #InfrastructureColor {
+  package "API" {
+    class "authAdapter" as AuthAdapter {
+      +login(credentials): Promise<AuthToken>
+      +refreshToken(token): Promise<AuthToken>
+      +logout(): Promise<void>
+    }
+    
+    class "userAdapter" as UserAdapter {
+      +getCurrentUser(token): Promise<User>
+      +updateProfile(token, profile): Promise<User>
+    }
+    
+    package "Generated" {
+      class "client.gen" as ApiClient {
+        +setConfig()
+      }
+      
+      class "sdk.gen" as ApiSdk {
+        +tokenEndpointUsingPost()
+        +getProfileMeUsingGet()
+        +updateProfileUsingPatch()
+      }
+    }
+    
+    class "config" as ApiConfig {
+      +getStandardHeaders()
+      +initializeApiClient()
+      +setAuthToken()
+      +clearAuthToken()
+    }
+  }
+  
+  package "Storage" {
+    class "localStorage" as LocalStorage {
+      +getItem<T>(key): T
+      +setItem<T>(key, value): void
+      +removeItem(key): void
+      +clear(): void
+    }
+  }
+}
+
+package "Presentation Layer" as Presentation #PresentationColor {
+  package "Pages" {
+    class "LoginPage" as LoginPage {
+      +handleSubmit()
+      +render()
+    }
+    
+    class "ProfilePage" as ProfilePage {
+      +handleSubmit()
+      +render()
+    }
+  }
+  
+  package "Components" {
+    package "UI" {
+      class "Button" as Button
+      class "Card" as Card
+      class "Input" as Input
+    }
+    
+    class "NavBar" as NavBar
+    class "UserDetails" as UserDetails
+  }
+}
+
+package "Lib Layer" as Lib #LibColor {
+  package "Utils" {
+    class "env" as Env {
+      +apiBaseUrl
+      +appName
+      +appVersion
+    }
+  }
+  
+  package "Hooks" {
+    class "useLocalStorage" as UseLocalStorage
+  }
+}
+
+' Define the dependencies/relationships
+' The fundamental rule is dependencies point inward
+
+' Application depends on Domain
+UseAuth ..> IAuthRepository : uses
+UseAuth ..> AuthModel : uses
+UseUser ..> IUserRepository : uses
+UseUser ..> UserModel : uses
+
+' Infrastructure implements Domain interfaces
+AuthAdapter ..|> IAuthRepository : implements
+UserAdapter ..|> IUserRepository : implements
+AuthAdapter --> ApiSdk : uses
+UserAdapter --> ApiSdk : uses
+ApiConfig --> ApiClient : configures
+
+' Application uses Infrastructure through Domain interfaces
+UseAuth --> AuthAdapter : uses
+UseUser --> UserAdapter : uses
+UseAuth --> LocalStorage : uses
+
+' Presentation uses Application
+LoginPage --> UseAuth : uses
+ProfilePage --> UseUser : uses
+ProfilePage --> UseAuth : uses
+NavBar --> UseAuth : uses
+UserDetails --> UseUser : uses
+
+' Everyone can use Lib
+Application ..> Lib : uses
+Infrastructure ..> Lib : uses
+Presentation ..> Lib : uses
+Infrastructure --> Env : uses
+
+' Additional notes on diagram
+note bottom of Domain
+  The Domain Layer is the core of the application,
+  containing business entities and rules.
+  It has no dependencies on other layers.
+end note
+
+note bottom of Application
+  The Application Layer orchestrates the flow of data
+  between Domain and Infrastructure layers.
+  It depends only on the Domain Layer.
+end note
+
+note bottom of Infrastructure
+  The Infrastructure Layer provides implementations
+  of Domain interfaces and handles external concerns.
+  It depends on the Domain Layer.
+end note
+
+note bottom of Presentation
+  The Presentation Layer handles UI concerns.
+  It depends on the Application Layer for business logic.
+end note
+
+note bottom of Lib
+  The Lib Layer provides utilities that can be
+  used by all other layers.
+end note
+
+@enduml 

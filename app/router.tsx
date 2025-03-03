@@ -1,15 +1,38 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { Welcome } from './welcome/welcome';
-import App from './api/example-usage';
-import { NavBar } from './components/NavBar';
+import { LoginPage } from './pages/LoginPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { AppProvider } from './application/AppProvider';
+import { useAuthContext } from './application/auth/AuthProvider';
 import { UserDetails } from './components/UserDetails';
+
+// Protected route component that checks authentication
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuthContext();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+// Public route component that redirects authenticated users
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuthContext();
+
+  if (isAuthenticated) {
+    return <Navigate to="/profile" replace />;
+  }
+
+  return <>{children}</>;
+};
 
 // Shared layout component that wraps all routes
 function Layout() {
   return (
     <div className="min-h-screen bg-base">
-      <NavBar />
       <main className="flex-grow">
         <Outlet />
       </main>
@@ -36,7 +59,7 @@ function ErrorBoundary() {
 }
 
 // Define routes
-const router = createBrowserRouter([
+const routerConfig = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
@@ -47,12 +70,28 @@ const router = createBrowserRouter([
         element: <Welcome />,
       },
       {
+        path: 'login',
+        element: (
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        ),
+      },
+      {
         path: 'profile',
-        element: <App />,
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'users/:userId',
-        element: <UserDetails />,
+        element: (
+          <ProtectedRoute>
+            <UserDetails />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -60,5 +99,9 @@ const router = createBrowserRouter([
 
 // Router provider component
 export function Router() {
-  return <RouterProvider router={router} />;
+  return (
+    <AppProvider>
+      <RouterProvider router={routerConfig} />
+    </AppProvider>
+  );
 }
